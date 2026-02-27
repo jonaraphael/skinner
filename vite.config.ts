@@ -2,7 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
+const basePathRaw = process.env.VITE_BASE_PATH ?? "/";
+const basePath = basePathRaw.endsWith("/") ? basePathRaw : `${basePathRaw}/`;
+const faviconPath = basePath === "/" ? "/favicon.svg" : `${basePath}favicon.svg`;
+
 export default defineConfig({
+  base: basePath,
   plugins: [
     react(),
     VitePWA({
@@ -15,10 +20,11 @@ export default defineConfig({
         theme_color: "#f6f4ef",
         background_color: "#f6f4ef",
         display: "standalone",
-        start_url: "/",
+        scope: basePath,
+        start_url: basePath,
         icons: [
           {
-            src: "/favicon.svg",
+            src: faviconPath,
             sizes: "192x192",
             type: "image/svg+xml"
           }
